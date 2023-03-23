@@ -1,0 +1,82 @@
+const blogForm = document.getElementById("blogForm");
+const main = document.querySelector("main");
+const newArticle = document.getElementById("newArticle");
+
+const articlesPerPage = 3;
+
+let allArticles = [
+  "Hello World!",
+  "Welcome to my cool new blog:)",
+  "I hope this all works...",
+];
+
+let currentPage = 1;
+
+blogForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const titleInput = document.getElementById("title"); //variable to get Input from the user
+  const contentInput = document.getElementById("content");
+  const title = titleInput.value.trim(); // .trim remove whitespace from start and the end
+  const content = contentInput.value.trim();
+
+  if (title === "" || content === "") {
+    alert("Please enter a title and content."); //create a box alert to ask the user to enter a text if they click in submit without any text.
+    return; // exit the function
+  }
+
+  const article = document.createElement("article");
+  const newTitle = document.createElement("h2");
+  const newContent = document.createElement("p");
+  const readMoreLink = document.createElement("a");
+  newTitle.innerText = title;
+  newContent.innerText = content;
+  readMoreLink.href = "#";
+  readMoreLink.innerText = "Read More";
+  article.appendChild(newTitle);
+  article.appendChild(newContent);
+  article.appendChild(readMoreLink);
+
+  main.insertBefore(article, newArticle); //to insert a new element (new article) before the element 'article'
+
+  titleInput.value = ""; //.value to access and set the user input
+  contentInput.value = ""; //empty string ("") to "clear" the text and allow the user to enter a new value when creating a new article.
+  
+});
+
+function displayArticles(page) {
+  main.innerHTML = "";
+
+ for (let i = startIndex; i < endIndex && i < allArticles.length; i++) {
+  main.appendChild(allArticles[i]);
+  }
+
+  createPaginationLinks(); 
+  
+}
+
+
+
+
+function createPaginationLinks() {
+  
+  const totalPages = Math.ceil(allArticles.length / articlesPerPage); //articlePerPage=3
+
+  const paginationDiv = document.createElement("div");
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageLink = document.createElement("a");
+    pageLink.href = "#";
+    pageLink.innerText = i;
+    pageLink.addEventListener("click", () => {
+      currentPage = i - 1; // added o -1
+      displayArticles(currentPage);
+    });
+    paginationDiv.appendChild(pageLink);
+  }
+  main.appendChild(paginationDiv);
+  //displayArticles(currentPage);
+}
+
+// Removendo isso aqui o programa roda direitinho, so nao entendo o pq ainda
+// displayArticles(currentPage);
